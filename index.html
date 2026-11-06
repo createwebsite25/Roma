@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Happy Birthday Roma!</title>
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Canvas Confetti Library -->
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+  <!-- Font Awesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <!-- Google Fonts: Pacifico & Poppins -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Poppins:wght@400;600;800;900&display=swap" rel="stylesheet">
+
+  <style>
+    body {
+      font-family: 'Poppins', sans-serif;
+    }
+    .font-pacifico {
+      font-family: 'Pacifico', cursive;
+    }
+
+    /* Vibrant Gradient Text Animation */
+    .animated-gradient-text {
+      background: linear-gradient(
+        -45deg,
+        #ff2a75, #ff6000, #ff0055, #9900ff, #00d4ff, #ff007f
+      );
+      background-size: 400% 400%;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      animation: gradientShift 6s ease infinite;
+    }
+
+    @keyframes gradientShift {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+
+    /* Floating balloons animation */
+    .balloon {
+      position: absolute;
+      bottom: -120px;
+      opacity: 0.85;
+      border-radius: 50% 50% 50% 50% / 40% 40% 60% 60%;
+      animation: floatUp 8s infinite linear;
+      z-index: 5;
+    }
+
+    .balloon::before {
+      content: "";
+      position: absolute;
+      bottom: -12px;
+      left: 50%;
+      transform: translateX(-50%);
+      border-left: 6px solid transparent;
+      border-right: 6px solid transparent;
+      border-bottom: 12px solid inherit;
+    }
+
+    .balloon::after {
+      content: "";
+      position: absolute;
+      bottom: -35px;
+      left: 50%;
+      width: 2px;
+      height: 25px;
+      background: rgba(255, 255, 255, 0.6);
+    }
+
+    @keyframes floatUp {
+      0% {
+        transform: translateY(0) rotate(0deg);
+        opacity: 0.9;
+      }
+      100% {
+        transform: translateY(-110vh) rotate(20deg);
+        opacity: 0.2;
+      }
+    }
+
+    /* Pulse Glow Button effect */
+    .glow-btn {
+      box-shadow: 0 0 25px rgba(255, 0, 128, 0.6);
+      transition: all 0.3s ease;
+    }
+    .glow-btn:hover {
+      box-shadow: 0 0 40px rgba(255, 0, 128, 0.9);
+      transform: translateY(-4px) scale(1.05);
+    }
+
+    /* Sparkle pulse background element */
+    .sparkle {
+      animation: sparkleAnim 2s infinite ease-in-out alternate;
+    }
+
+    @keyframes sparkleAnim {
+      0% { transform: scale(0.8) rotate(0deg); opacity: 0.5; }
+      100% { transform: scale(1.2) rotate(15deg); opacity: 1; }
+    }
+  </style>
+</head>
+<body class="bg-slate-950 text-white min-h-screen flex flex-col justify-between overflow-x-hidden relative">
+
+  <!-- Background Decorative Light Orbs -->
+  <div class="fixed top-10 left-10 w-72 h-72 bg-pink-600/30 rounded-full blur-3xl pointer-events-none"></div>
+  <div class="fixed bottom-10 right-10 w-80 h-80 bg-purple-600/30 rounded-full blur-3xl pointer-events-none"></div>
+  <div class="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-amber-500/20 rounded-full blur-3xl pointer-events-none"></div>
+
+  <!-- Floating Balloons Container -->
+  <div id="balloon-container" class="fixed inset-0 pointer-events-none overflow-hidden"></div>
+
+  <!-- Main Content Wrapper -->
+  <main class="relative z-10 flex-grow flex flex-col items-center justify-center text-center p-6 sm:p-10">
+
+    <!-- Top Badge -->
+    <div class="inline-flex items-center gap-2 px-5 py-2 rounded-full bg-pink-500/10 border border-pink-500/30 text-pink-300 mb-6 animate-bounce">
+      <i class="fa-solid font-bold fa-cake-candles text-pink-400"></i>
+      <span class="text-sm font-semibold tracking-wider uppercase">It's Birthday Time!</span>
+      <i class="fa-solid font-bold fa-sparkles text-amber-300"></i>
+    </div>
+
+    <!-- Main Birthday Message for Roma -->
+    <div class="relative mb-6">
+      <h1 class="text-5xl sm:text-7xl md:text-8xl font-extrabold tracking-tight animated-gradient-text uppercase drop-shadow-2xl">
+        Happy Birthday
+      </h1>
+      <h2 class="text-6xl sm:text-8xl md:text-9xl font-pacifico text-amber-300 drop-shadow-[0_10px_20px_rgba(255,190,0,0.4)] mt-2">
+        Roma! ✨
+      </h2>
+    </div>
+
+    <!-- Subtitle / Wishing Line -->
+    <p class="max-w-xl text-slate-300 text-lg sm:text-xl font-medium mb-10 leading-relaxed px-4">
+      Wishing you a day filled with love, sparkle, laughter, and all the glitz and glamour in the world! 💖🎂🎉
+    </p>
+
+    <!-- Celebration Controls / Action Buttons -->
+    <div class="flex flex-col sm:flex-row gap-5 items-center justify-center mb-6">
+      
+      <!-- Confetti Cannon Button -->
+      <button onclick="triggerConfetti()" class="px-6 py-3.5 rounded-full bg-slate-800/80 hover:bg-slate-700 border border-slate-600 text-white font-semibold flex items-center gap-2 transition hover:scale-105 active:scale-95 shadow-lg">
+        <i class="fa-solid fa-wand-magic-sparkles text-amber-400"></i>
+        Pop More Confetti!
+      </button>
+
+      <!-- Iconic Thank You Button -->
+      <button onclick="openPooModal()" class="glow-btn px-8 py-4 rounded-full bg-gradient-to-r from-pink-500 via-rose-500 to-purple-600 text-white font-black text-xl tracking-wide flex items-center gap-3 transition cursor-pointer active:scale-95">
+        <span>THANK YOU</span>
+        <i class="fa-solid fa-heart text-amber-200 animate-pulse"></i>
+      </button>
+
+    </div>
+
+    <!-- Hint text -->
+    <p class="text-xs text-slate-400 italic">
+      <i class="fa-solid fa-circle-info mr-1"></i> Click the Thank You button for a special glam surprise!
+    </p>
+  </main>
+
+  <!-- Footer -->
+  <footer class="relative z-10 text-center py-4 text-xs text-slate-500 border-t border-slate-800/60">
+    Made with 💕 for Roma's Special Day
+  </footer>
+
+  <!-- FULLSCREEN POO MODAL -->
+  <div id="pooModal" class="fixed inset-0 z-50 bg-black/95 backdrop-blur-md hidden flex flex-col items-center justify-center p-4 transition-all duration-500 opacity-0 scale-95">
+    
+    <!-- Modal Close Button (Top Right) -->
+    <button onclick="closePooModal()" class="absolute top-5 right-5 sm:top-8 sm:right-8 z-50 text-white bg-slate-800/80 hover:bg-pink-600 border border-slate-600 hover:border-pink-500 w-12 h-12 rounded-full flex items-center justify-center text-xl transition-all shadow-xl hover:rotate-90">
+      <i class="fa-solid fa-xmark"></i>
+    </button>
+
+    <!-- Modal Content Box -->
+    <div class="relative max-w-4xl w-full flex flex-col items-center justify-center">
+      
+      <!-- Catchphrase Header -->
+      <div class="text-center mb-4">
+        <span class="text-amber-400 text-sm font-extrabold tracking-widest uppercase bg-amber-400/10 px-4 py-1.5 rounded-full border border-amber-400/30 inline-block mb-2">
+          Iconic Poo Vibe Checklist ✅
+        </span>
+        <h3 class="text-3xl sm:text-5xl font-black text-transparent bg-clip-text bg-gradient-to-r from-pink-400 via-rose-300 to-purple-400">
+          "Good looks, good looks... and GOOD LOOKS!" 🔥
+        </h3>
+      </div>
+
+      <!-- Poo Image Frame -->
+      <div class="relative rounded-3xl overflow-hidden border-4 border-pink-500/50 shadow-[0_0_50px_rgba(236,72,153,0.5)] bg-slate-900 max-h-[70vh] flex items-center justify-center">
+        <!-- Poo Iconic Image from K3G -->
+        <img 
+          src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=1000&q=80" 
+          alt="Poo (Kareena Kapoor) Iconic Persona" 
+          class="w-full h-full object-cover max-h-[65vh] rounded-2xl"
+          onerror="this.onerror=null; this.src='https://placehold.co/800x1000/ff007f/ffffff?text=Tell+Me+How+It+Feels!+💅';"
+        />
+        
+        <!-- Overlay Quote Badge -->
+        <div class="absolute bottom-4 left-4 right-4 bg-slate-950/80 backdrop-blur-md p-4 rounded-2xl border border-pink-500/30 text-center">
+          <p class="text-pink-300 font-bold text-lg sm:text-xl">
+            "Tell me how it feels to be the most stylish birthday girl!" 💅✨
+          </p>
+          <p class="text-slate-400 text-xs mt-1">Happy Birthday Roma, stay fabulous forever!</p>
+        </div>
+      </div>
+
+      <!-- Exit Button -->
+      <button onclick="closePooModal()" class="mt-6 px-8 py-3 rounded-full bg-slate-800 hover:bg-pink-600 text-white font-bold text-sm tracking-wide border border-slate-700 hover:border-pink-500 transition shadow-lg">
+        Back to Party <i class="fa-solid fa-arrow-right ml-2"></i>
+      </button>
+
+    </div>
+  </div>
+
+  <!-- JavaScript Logic -->
+  <script>
+    // Launch festive confetti bursts on page load
+    window.addEventListener('load', () => {
+      triggerConfetti();
+      spawnBalloons();
+    });
+
+    // Confetti Fireworks logic
+    function triggerConfetti() {
+      const duration = 2.5 * 1000;
+      const animationEnd = Date.now() + duration;
+
+      const interval = setInterval(function() {
+        const timeLeft = animationEnd - Date.now();
+
+        if (timeLeft <= 0) {
+          return clearInterval(interval);
+        }
+
+        const particleCount = 50 * (timeLeft / duration);
+        
+        // Burst from left side
+        confetti({
+          particleCount: particleCount,
+          startVelocity: 30,
+          spread: 360,
+          origin: { x: Math.random() * 0.3, y: Math.random() * 0.5 + 0.2 }
+        });
+        
+        // Burst from right side
+        confetti({
+          particleCount: particleCount,
+          startVelocity: 30,
+          spread: 360,
+          origin: { x: Math.random() * 0.3 + 0.7, y: Math.random() * 0.5 + 0.2 }
+        });
+      }, 250);
+    }
+
+    // Modal Control Functions
+    function openPooModal() {
+      const modal = document.getElementById('pooModal');
+      modal.classList.remove('hidden');
+      setTimeout(() => {
+        modal.classList.remove('opacity-0', 'scale-95');
+        modal.classList.add('opacity-100', 'scale-100');
+      }, 10);
+
+      // Trigger extra confetti celebration for Poo
+      confetti({
+        particleCount: 120,
+        spread: 100,
+        origin: { y: 0.6 }
+      });
+    }
+
+    function closePooModal() {
+      const modal = document.getElementById('pooModal');
+      modal.classList.remove('opacity-100', 'scale-100');
+      modal.classList.add('opacity-0', 'scale-95');
+      setTimeout(() => {
+        modal.classList.add('hidden');
+      }, 300);
+    }
+
+    // Dynamically spawn floating party balloons
+    function spawnBalloons() {
+      const container = document.getElementById('balloon-container');
+      const colors = ['#ff007f', '#9900ff', '#00d4ff', '#ffb700', '#ff0055', '#00ffaa'];
+      const balloonCount = 12;
+
+      for (let i = 0; i < balloonCount; i++) {
+        const balloon = document.createElement('div');
+        balloon.className = 'balloon';
+        
+        const size = Math.floor(Math.random() * 30) + 40; // size 40px to 70px
+        const color = colors[Math.floor(Math.random() * colors.length)];
+        const left = Math.random() * 95; // horizontal placement %
+        const delay = Math.random() * 7; // staggered animation delay
+        const duration = Math.random() * 6 + 7; // animation speed
+
+        balloon.style.width = `${size}px`;
+        balloon.style.height = `${size * 1.25}px`;
+        balloon.style.backgroundColor = color;
+        balloon.style.left = `${left}%`;
+        balloon.style.animationDelay = `${delay}s`;
+        balloon.style.animationDuration = `${duration}s`;
+
+        container.appendChild(balloon);
+      }
+    }
+
+    // Keyboard support: Close modal on Esc press
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') {
+        closePooModal();
+      }
+    });
+  </script>
+</body>
+</html>
